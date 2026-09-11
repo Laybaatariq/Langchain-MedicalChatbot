@@ -6,29 +6,29 @@ uvicorn[standard]==0.34.0
 pydantic==2.10.4
 pydantic-settings==2.7.1
 
-# --- LangChain core + integrations ---
+# --- LangChain ---
 langchain==0.3.14
-langchain-core==0.3.29
+langchain-core==0.3.30
 langchain-community==0.3.14
 langchain-groq==0.2.3
 langchain-openai==0.3.1
 
-# --- Vector DB (Qdrant) ---
+# --- Vector DB ---
 qdrant-client==1.12.1
 langchain-qdrant==0.2.0
 
-# --- Embeddings (if using open-source instead of OpenAI) ---
+# --- Embeddings ---
 sentence-transformers==3.3.1
 
-# --- MongoDB (chat history storage) ---
-pymongo==4.10.1
+# --- MongoDB ---
+pymongo==4.9.2
 motor==3.6.0
 
-# --- Document loading / chunking ---
-unstructured==0.16.11
+# --- Document loading ---
+unstructured==0.16.25
 pypdf==5.1.0
 
-# --- Reranking (optional, for retrieval quality) ---
+# --- Reranking ---
 cohere==5.13.4
 
 # --- Testing ---
