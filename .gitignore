@@ -19,3 +19,8 @@ backend/.venv/
 backend/.env
 .venv/
 backend/.venv/
+
+.env
+backend/.env
+.venv/
+backend/.venv/
