@@ -1,11 +1,15 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+BASE_DIR = Path(__file__).resolve().parents[2]
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=BASE_DIR / ".env",
         env_file_encoding="utf-8",
         extra="ignore",
     )
@@ -35,8 +39,7 @@ class Settings(BaseSettings):
     emergency_default_message: str = (
         "This sounds like it could be a medical emergency. "
         "Please contact your local emergency number or go to the "
-        "nearest emergency room immediately. I'm not able to help with "
-        "emergencies directly."
+        "nearest emergency room immediately."
     )
 
     # --- App settings ---
