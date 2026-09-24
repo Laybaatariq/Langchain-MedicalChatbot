@@ -1,36 +1,43 @@
-# Virtual environments
+# Python virtual environments
 .venv/
+venv/
+env/
+ENV/
 backend/.venv/
+backend/venv/
 
-# Environment secrets
+# Environment files and secrets
 .env
+.env.*
 backend/.env
 
-# Python cache
+# Python cache / build artifacts
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
 .pytest_cache/
-backend/.env
-.env
-backend/.venv/
-.venv/
+*.egg-info/
+dist/
+build/
 
-.env
-backend/.env
-.venv/
-backend/.venv/
+# IDE / editor junk
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
 
-.env
-backend/.env
-.venv/
-backend/.venv/
+# Logs and local data
+*.log
+logs/
+chat_history/
+audit_logs/
+*.jsonl
 
-.env
-backend/.env
-.venv/
-backend/.venv/
-
-.env
-backend/.env
-.venv/
-backend/.venv/
+# Optional project artifacts
+qdrant_storage/
+*.qdrant
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
