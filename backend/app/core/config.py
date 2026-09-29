@@ -14,25 +14,26 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    # --- LLM Provider ---
+    # --- LLM Provider (keys come from .env only, never hardcode them) ---
     anthropic_api_key: str = ""
     openai_api_key: str = ""
     groq_api_key: str = ""
-    llm_model_name: str = "llama-3.3-70b-versatile"
+    llm_model_name: str = "openai/gpt-oss-120b"
     llm_temperature: float = 0.1
 
-    # --- Vector DB (Qdrant) ---
-    qdrant_url: str = "http://localhost:6333"
+    # --- Vector DB (Qdrant Cloud) ---
+    qdrant_url: str = ""
     qdrant_api_key: str = ""
     qdrant_collection_name: str = "medical_docs"
 
-    # --- Embeddings ---
-    embedding_model_name: str = "text-embedding-3-small"
-    embedding_dimension: int = 1536
+    # --- Embeddings (fastembed, runs locally, no API key) ---
+    embedding_model_name: str = "BAAI/bge-small-en-v1.5"
+    embedding_dimension: int = 384
 
-    # --- MongoDB ---
-    mongo_uri: str = "mongodb://localhost:27017"
-    mongo_db_name: str = "medical_chatbot_db"
+    # --- MongoDB Atlas ---
+    mongodb_uri: str = ""
+    mongodb_db_name: str = "medical_chatbot"
+    mongodb_chat_collection: str = "chat_messages"
 
     # --- Safety layer ---
     triage_confidence_threshold: float = 0.6

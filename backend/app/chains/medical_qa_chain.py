@@ -1,29 +1,32 @@
-
-from langchain_groq import ChatGroq
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_groq import ChatGroq
 
-from app.core.config import get_settings
-from app.safety.triage_classifier import triage
-from app.safety.keyword_filters import TriageCategory
-from app.rag.vector_store import similarity_search
 from app.chains.system_prompts import (
-    MEDICAL_QA_SYSTEM_PROMPT,
-    DISCLAIMER_TEXT,
     CLARIFY_PROMPT,
+    DISCLAIMER_TEXT,
+    MEDICAL_QA_SYSTEM_PROMPT,
 )
+from app.core.config import get_settings
+from app.rag.vector_store import similarity_search
+from app.safety.keyword_filters import TriageCategory
+from app.safety.triage_classifier import triage
 
 settings = get_settings()
 
 # --- Main answering LLM (separate instance from the triage classifier's LLM) ---
 _answer_llm = ChatGroq(
     model=settings.llm_model_name,
-    temperature=settings.llm_temperature,  # 0.1 — grounded, low creativity
+    temperature=settings.llm_temperature,  # 0.1 - grounded, low creativity
     api_key=settings.groq_api_key,
 )
 
+# The system prompt has a {context} variable, so context is passed separately
+# from the question. Past messages go in via the "history" placeholder.
 _qa_prompt = ChatPromptTemplate.from_messages([
     ("system", MEDICAL_QA_SYSTEM_PROMPT),
+    MessagesPlaceholder("history"),
     ("human", "{question}"),
 ])
 
@@ -34,6 +37,17 @@ _clarify_chain = (
     | _answer_llm
     | StrOutputParser()
 )
+
+
+def _to_messages(history: list[dict] | None) -> list[BaseMessage]:
+    """Converts Mongo history ([{"role": "user"|"assistant", "content": ...}]) to LangChain messages."""
+    messages: list[BaseMessage] = []
+    for item in history or []:
+        if item["role"] == "user":
+            messages.append(HumanMessage(content=item["content"]))
+        else:
+            messages.append(AIMessage(content=item["content"]))
+    return messages
 
 
 def _format_context(retrieved_chunks: list[dict]) -> str:
@@ -59,18 +73,18 @@ def _is_ambiguous(retrieved_chunks: list[dict], min_score: float = 0.3) -> bool:
     return retrieved_chunks[0]["score"] < min_score
 
 
-def answer_query(user_message: str) -> dict:
+def answer_query(user_message: str, history: list[dict] | None = None) -> dict:
     """
     Main entry point for the chatbot. Combines:
       1. Safety triage (emergency / sensitive / normal)
       2. RAG retrieval (grounding context)
       3. LLM generation (with guardrails) OR clarifying question
 
-    Returns a dict matching the shape of ChatResponse (see api/schemas.py).
+    Returns a dict matching ChatResponse (minus session_id), see api/schemas.py.
     """
     category = triage(user_message)
 
-    # --- Case 1: Emergency — never call the LLM, return fixed safe message ---
+    # --- Case 1: Emergency - never call the LLM, return fixed safe message ---
     if category == TriageCategory.EMERGENCY:
         return {
             "reply": settings.emergency_default_message,
@@ -82,7 +96,7 @@ def answer_query(user_message: str) -> dict:
     # --- Retrieve grounding context for both SENSITIVE and NORMAL cases ---
     retrieved_chunks = similarity_search(user_message, top_k=4)
 
-    # --- Case 2: Query too vague — ask a clarifying question instead of guessing ---
+    # --- Case 2: Query too vague - ask a clarifying question instead of guessing ---
     if _is_ambiguous(retrieved_chunks):
         clarifying_question = _clarify_chain.invoke({"query": user_message})
         return {
@@ -92,15 +106,19 @@ def answer_query(user_message: str) -> dict:
             "disclaimer": None,
         }
 
-    # --- Case 3: Normal or Sensitive — answer using grounded context ---
-    context = _format_context(retrieved_chunks)
-    reply = _qa_chain.invoke({"question": f"Context:\n{context}\n\nQuestion: {user_message}"})
+    # --- Case 3: Normal or Sensitive - answer using grounded context ---
+    reply = _qa_chain.invoke({
+        "context": _format_context(retrieved_chunks),
+        "history": _to_messages(history),
+        "question": user_message,
+    })
 
     sources = [
         {
             "title": chunk.get("source", "Unknown source"),
-            "snippet": chunk["text"][:150] + "...",
+            "snippet": chunk["text"][:150] + ("..." if len(chunk["text"]) > 150 else ""),
             "url": None,
+            "score": chunk["score"],
         }
         for chunk in retrieved_chunks
     ]
@@ -123,10 +141,10 @@ if __name__ == "__main__":
     ]
 
     for q in test_queries:
-        print(f"\n{'='*50}")
+        print(f"\n{'=' * 50}")
         print(f"Query: {q}")
         result = answer_query(q)
         print(f"Category: {result['category']}")
         print(f"Reply: {result['reply']}")
-        if result['sources']:
+        if result["sources"]:
             print(f"Sources: {[s['title'] for s in result['sources']]}")
