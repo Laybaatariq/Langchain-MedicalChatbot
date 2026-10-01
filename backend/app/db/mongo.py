@@ -41,24 +41,42 @@ def _build_client() -> MongoClient:
     return MongoClient(settings.mongodb_uri, **kwargs)
 
 
-_client = _build_client()
-_db = _client[settings.mongodb_db_name]
-_messages = _db[settings.mongodb_chat_collection]
+_client = None
+_db = None
+_messages = None
+
+
+def get_client() -> MongoClient:
+    """Create the MongoDB client lazily so the app can still start without Atlas config."""
+    global _client, _db, _messages
+    if _client is None:
+        _client = _build_client()
+        _db = _client[settings.mongodb_db_name]
+        _messages = _db[settings.mongodb_chat_collection]
+    return _client
+
+
+def get_messages_collection():
+    """Return the collection used for chat history, creating it lazily if needed."""
+    if _messages is None:
+        get_client()
+    return _messages
 
 
 def check_connection() -> bool:
     """Returns True if the Atlas cluster is reachable."""
     try:
-        _client.admin.command("ping")
+        client = get_client()
+        client.admin.command("ping")
         return True
-    except PyMongoError as exc:
+    except (PyMongoError, RuntimeError) as exc:
         print(f"[MongoDB] Connection failed: {exc}")
         return False
 
 
 def ensure_indexes() -> None:
     """Index for fast per-session history lookups. Safe to call on every startup."""
-    _messages.create_index([("session_id", ASCENDING), ("created_at", ASCENDING)])
+    get_messages_collection().create_index([("session_id", ASCENDING), ("created_at", ASCENDING)])
 
 
 def save_message(session_id: str, role: str, content: str, metadata: dict | None = None) -> None:
@@ -67,7 +85,7 @@ def save_message(session_id: str, role: str, content: str, metadata: dict | None
     role: "user" or "assistant"
     metadata: optional extras, e.g. {"sources": [...]} for RAG citations
     """
-    _messages.insert_one(
+    get_messages_collection().insert_one(
         {
             "session_id": session_id,
             "role": role,
@@ -84,7 +102,8 @@ def get_history(session_id: str, limit: int = 20) -> list[dict]:
     [{"role": "user", "content": "..."}, ...]
     """
     cursor = (
-        _messages.find({"session_id": session_id}, {"_id": 0, "role": 1, "content": 1})
+        get_messages_collection()
+        .find({"session_id": session_id}, {"_id": 0, "role": 1, "content": 1})
         .sort("created_at", -1)
         .limit(limit)
     )
@@ -93,7 +112,7 @@ def get_history(session_id: str, limit: int = 20) -> list[dict]:
 
 def clear_history(session_id: str) -> int:
     """Deletes all messages of a session. Returns how many were deleted."""
-    return _messages.delete_many({"session_id": session_id}).deleted_count
+    return get_messages_collection().delete_many({"session_id": session_id}).deleted_count
 
 
 def list_sessions(limit: int = 50) -> list[dict]:
@@ -103,7 +122,7 @@ def list_sessions(limit: int = 50) -> list[dict]:
         {"$sort": {"last_active": -1}},
         {"$limit": limit},
     ]
-    return [{"session_id": d["_id"], "last_active": d["last_active"]} for d in _messages.aggregate(pipeline)]
+    return [{"session_id": d["_id"], "last_active": d["last_active"]} for d in get_messages_collection().aggregate(pipeline)]
 
 
 # --- Quick manual test ---

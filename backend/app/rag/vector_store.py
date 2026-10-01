@@ -32,7 +32,15 @@ def _build_client() -> QdrantClient:
     )
 
 
-_client = _build_client()
+_client = None
+
+
+def get_client() -> QdrantClient:
+    """Create the Qdrant client lazily so the app can start without cloud credentials."""
+    global _client
+    if _client is None:
+        _client = _build_client()
+    return _client
 
 
 def _embed_texts(texts: list[str]) -> list[list[float]]:
@@ -48,7 +56,8 @@ def _embed_query(text: str) -> list[float]:
 def check_connection() -> bool:
     """Returns True if the Qdrant Cloud cluster is reachable."""
     try:
-        _client.get_collections()
+        client = get_client()
+        client.get_collections()
         return True
     except Exception as exc:
         print(f"[Qdrant] Connection failed: {exc}")
@@ -57,8 +66,9 @@ def check_connection() -> bool:
 
 def ensure_collection_exists() -> None:
     """Creates the collection if missing. Safe to call on every startup."""
-    if not _client.collection_exists(settings.qdrant_collection_name):
-        _client.create_collection(
+    client = get_client()
+    if not client.collection_exists(settings.qdrant_collection_name):
+        client.create_collection(
             collection_name=settings.qdrant_collection_name,
             vectors_config=VectorParams(size=_EMBEDDING_DIM, distance=Distance.COSINE),
         )
@@ -76,6 +86,7 @@ def upsert_documents(texts: list[str], metadatas: list[dict] | None = None) -> N
     if metadatas is None:
         metadatas = [{} for _ in texts]
 
+    client = get_client()
     vectors = _embed_texts(texts)
 
     points = [
@@ -87,7 +98,7 @@ def upsert_documents(texts: list[str], metadatas: list[dict] | None = None) -> N
         for text, vector, metadata in zip(texts, vectors, metadatas)
     ]
 
-    _client.upsert(collection_name=settings.qdrant_collection_name, points=points)
+    client.upsert(collection_name=settings.qdrant_collection_name, points=points)
     print(f"Upserted {len(points)} chunks into Qdrant.")
 
 
@@ -96,7 +107,8 @@ def similarity_search(query: str, top_k: int = 4) -> list[dict]:
     Returns the top_k most similar chunks:
     [{"text": ..., "score": ..., **metadata}]
     """
-    response = _client.query_points(
+    client = get_client()
+    response = client.query_points(
         collection_name=settings.qdrant_collection_name,
         query=_embed_query(query),
         limit=top_k,
