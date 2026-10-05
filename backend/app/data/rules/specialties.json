@@ -1,0 +1,270 @@
+{
+  "note": "Maps what the patient describes to the TYPE of doctor to see. This is not a diagnosis. If nothing matches, or several specialties match, the default is a General Physician.",
+  "default": "general_physician",
+  "child_age_limit": 14,
+  "child_specialty": "pediatrician",
+  "specialties": [
+    {
+      "id": "general_physician",
+      "name": "General Physician",
+      "symptom_keywords": [
+        "fever",
+        "flu",
+        "cold",
+        "cough",
+        "sore throat",
+        "body ache",
+        "fatigue",
+        "weakness",
+        "bukhar",
+        "khansi",
+        "nazla",
+        "jism dard",
+        "kamzori"
+      ],
+      "note": "First stop for common illnesses and anything unclear."
+    },
+    {
+      "id": "cardiologist",
+      "name": "Cardiologist",
+      "symptom_keywords": [
+        "palpitations",
+        "heart racing",
+        "irregular heartbeat",
+        "high blood pressure",
+        "swollen ankles",
+        "chest discomfort",
+        "dil ki dharkan",
+        "blood pressure"
+      ],
+      "note": ""
+    },
+    {
+      "id": "neurologist",
+      "name": "Neurologist",
+      "symptom_keywords": [
+        "migraine",
+        "recurring headache",
+        "frequent headaches",
+        "dizziness",
+        "vertigo",
+        "numbness",
+        "tingling",
+        "tremor",
+        "memory loss",
+        "sar dard",
+        "chakkar",
+        "sunn"
+      ],
+      "note": ""
+    },
+    {
+      "id": "gastroenterologist",
+      "name": "Gastroenterologist",
+      "symptom_keywords": [
+        "stomach pain",
+        "abdominal pain",
+        "acid reflux",
+        "heartburn",
+        "bloating",
+        "diarrhea",
+        "diarrhoea",
+        "constipation",
+        "nausea",
+        "vomiting",
+        "pait dard",
+        "pait mein dard",
+        "ulti",
+        "dast",
+        "qabz",
+        "gas",
+        "teezabiyat"
+      ],
+      "note": ""
+    },
+    {
+      "id": "pulmonologist",
+      "name": "Pulmonologist",
+      "symptom_keywords": [
+        "cough for weeks",
+        "wheezing",
+        "shortness of breath",
+        "asthma",
+        "chronic cough",
+        "breathlessness",
+        "saans ki takleef",
+        "dama"
+      ],
+      "note": ""
+    },
+    {
+      "id": "dermatologist",
+      "name": "Dermatologist",
+      "symptom_keywords": [
+        "rash",
+        "itching",
+        "acne",
+        "pimples",
+        "eczema",
+        "skin problem",
+        "hair loss",
+        "dandruff",
+        "skin allergy",
+        "kharish",
+        "daane",
+        "jild",
+        "baal jharna"
+      ],
+      "note": ""
+    },
+    {
+      "id": "ent",
+      "name": "ENT Specialist",
+      "symptom_keywords": [
+        "ear pain",
+        "earache",
+        "blocked nose",
+        "sinus",
+        "hearing loss",
+        "ringing in ears",
+        "tonsils",
+        "throat pain for weeks",
+        "kaan dard",
+        "naak band",
+        "gala kharab"
+      ],
+      "note": ""
+    },
+    {
+      "id": "orthopedic",
+      "name": "Orthopedic Doctor",
+      "symptom_keywords": [
+        "joint pain",
+        "knee pain",
+        "back pain",
+        "neck pain",
+        "shoulder pain",
+        "fracture",
+        "sprain",
+        "bone pain",
+        "jorron mein dard",
+        "ghutne ka dard",
+        "kamar dard",
+        "haddi"
+      ],
+      "note": ""
+    },
+    {
+      "id": "gynecologist",
+      "name": "Gynecologist",
+      "symptom_keywords": [
+        "period problems",
+        "irregular periods",
+        "heavy periods",
+        "pregnancy",
+        "pregnant",
+        "pelvic pain",
+        "vaginal discharge",
+        "menopause",
+        "mahwari",
+        "hamal",
+        "pregnancy check"
+      ],
+      "note": ""
+    },
+    {
+      "id": "pediatrician",
+      "name": "Pediatrician",
+      "symptom_keywords": [
+        "child fever",
+        "baby fever",
+        "my child",
+        "my baby",
+        "my son",
+        "my daughter",
+        "toddler",
+        "infant",
+        "bachay ko bukhar",
+        "bachche"
+      ],
+      "note": ""
+    },
+    {
+      "id": "endocrinologist",
+      "name": "Endocrinologist",
+      "symptom_keywords": [
+        "diabetes",
+        "high blood sugar",
+        "thyroid",
+        "weight gain",
+        "hormone",
+        "excessive thirst",
+        "sugar ki bimari",
+        "thyroid ka masla"
+      ],
+      "note": ""
+    },
+    {
+      "id": "psychiatrist",
+      "name": "Psychiatrist",
+      "symptom_keywords": [
+        "anxiety",
+        "depression",
+        "panic",
+        "can't sleep",
+        "insomnia",
+        "low mood",
+        "stress",
+        "mood swings",
+        "ghabrahat",
+        "udasi",
+        "neend nahi aati"
+      ],
+      "note": ""
+    },
+    {
+      "id": "ophthalmologist",
+      "name": "Eye Specialist",
+      "symptom_keywords": [
+        "eye pain",
+        "red eye",
+        "blurred vision",
+        "vision problems",
+        "watery eyes",
+        "eye infection",
+        "aankh dard",
+        "dhundhla nazar"
+      ],
+      "note": ""
+    },
+    {
+      "id": "urologist",
+      "name": "Urologist",
+      "symptom_keywords": [
+        "burning urination",
+        "frequent urination",
+        "painful urination",
+        "kidney stone",
+        "blood in urine",
+        "peshab mein jalan",
+        "peshab ka masla"
+      ],
+      "note": ""
+    },
+    {
+      "id": "dentist",
+      "name": "Dentist",
+      "symptom_keywords": [
+        "toothache",
+        "tooth pain",
+        "gum bleeding",
+        "gum pain",
+        "cavity",
+        "wisdom tooth",
+        "daant dard",
+        "masoorhay"
+      ],
+      "note": ""
+    }
+  ]
+}

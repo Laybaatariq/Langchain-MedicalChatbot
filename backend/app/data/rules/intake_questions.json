@@ -1,0 +1,166 @@
+{
+  "note": "Questions the bot asks one at a time, like a doctor would. 'type' tells the frontend which control to show. Every question is skippable except the first. The red-flag check runs after EVERY answer.",
+  "questions": [
+    {
+      "id": "chief_complaint",
+      "text": "What is bothering you today?",
+      "type": "text",
+      "required": true,
+      "skippable": false
+    },
+    {
+      "id": "duration",
+      "text": "How long has this been going on?",
+      "type": "choice",
+      "skippable": true,
+      "options": [
+        "Less than a day",
+        "1 to 3 days",
+        "4 to 7 days",
+        "More than a week",
+        "More than a month"
+      ]
+    },
+    {
+      "id": "severity",
+      "text": "On a scale of 1 to 10, how bad is it? (1 is barely noticeable, 10 is the worst you can imagine)",
+      "type": "scale",
+      "skippable": true,
+      "min": 1,
+      "max": 10
+    },
+    {
+      "id": "trend",
+      "text": "Is it getting better, staying the same, or getting worse?",
+      "type": "choice",
+      "skippable": true,
+      "options": [
+        "Getting better",
+        "About the same",
+        "Getting worse"
+      ]
+    },
+    {
+      "id": "associated",
+      "text": "Are you also having any of these?",
+      "type": "multi_choice",
+      "skippable": true,
+      "options": [
+        "Fever",
+        "Vomiting",
+        "Diarrhea",
+        "Cough",
+        "Shortness of breath",
+        "Chest pain",
+        "Rash",
+        "Dizziness",
+        "None of these"
+      ]
+    },
+    {
+      "id": "age",
+      "text": "How old are you (or the person who is unwell)?",
+      "type": "number",
+      "skippable": true,
+      "min": 0,
+      "max": 120
+    },
+    {
+      "id": "sex",
+      "text": "Is the patient male or female?",
+      "type": "choice",
+      "skippable": true,
+      "options": [
+        "Male",
+        "Female",
+        "Prefer not to say"
+      ]
+    },
+    {
+      "id": "pregnancy",
+      "text": "Is there any chance of pregnancy?",
+      "type": "choice",
+      "skippable": true,
+      "options": [
+        "Yes",
+        "No",
+        "Not sure"
+      ],
+      "ask_if": {
+        "sex": "Female",
+        "age_min": 12,
+        "age_max": 55
+      }
+    },
+    {
+      "id": "conditions",
+      "text": "Do you have any long-term health conditions? (for example diabetes or high blood pressure)",
+      "type": "text",
+      "skippable": true
+    },
+    {
+      "id": "allergies",
+      "text": "Do you have any allergies, especially to medicines?",
+      "type": "text",
+      "skippable": true
+    },
+    {
+      "id": "medications",
+      "text": "Are you taking any medicines right now?",
+      "type": "text",
+      "skippable": true
+    }
+  ],
+  "flows": {
+    "short": [
+      "chief_complaint",
+      "duration",
+      "severity",
+      "associated"
+    ],
+    "standard": [
+      "chief_complaint",
+      "duration",
+      "severity",
+      "trend",
+      "associated",
+      "age"
+    ],
+    "full": [
+      "chief_complaint",
+      "duration",
+      "severity",
+      "trend",
+      "associated",
+      "age",
+      "sex",
+      "pregnancy",
+      "conditions",
+      "allergies",
+      "medications"
+    ]
+  },
+  "default_flow": "standard",
+  "urgency_levels": [
+    {
+      "id": "emergency",
+      "label": "Emergency",
+      "meaning": "Possible threat to life. Show the emergency message only."
+    },
+    {
+      "id": "urgent",
+      "label": "See a doctor soon",
+      "meaning": "Should be seen today or within a day."
+    },
+    {
+      "id": "routine",
+      "label": "Book an appointment",
+      "meaning": "Can be seen within a few days."
+    },
+    {
+      "id": "self_care",
+      "label": "Self-care",
+      "meaning": "Mild. General care advice and when to see a doctor."
+    }
+  ]
+}

@@ -1,0 +1,318 @@
+{
+  "note": "Demo rules written from general, widely published first-aid and public-health guidance. Check them against official pages (WHO, CDC, NHS, your national health body) and have a clinician review them before any real-world use. Keywords are matched against the patient's message in lower case; English and Roman Urdu phrases are both included. Add or remove phrases freely.",
+  "emergency": [
+    {
+      "id": "chest_pain",
+      "label": "Chest pain, pressure or tightness",
+      "keywords": [
+        "chest pain",
+        "chest pressure",
+        "tightness in my chest",
+        "tight chest",
+        "seene mein dard",
+        "seene me dard",
+        "chest mein dard",
+        "chest me dard"
+      ]
+    },
+    {
+      "id": "breathing",
+      "label": "Severe difficulty breathing",
+      "keywords": [
+        "can't breathe",
+        "cant breathe",
+        "cannot breathe",
+        "difficulty breathing",
+        "trouble breathing",
+        "struggling to breathe",
+        "gasping",
+        "saans nahi aa rahi",
+        "saans lene mein takleef",
+        "saans phool rahi",
+        "dam ghut"
+      ]
+    },
+    {
+      "id": "stroke",
+      "label": "Possible stroke signs",
+      "keywords": [
+        "face drooping",
+        "face is drooping",
+        "slurred speech",
+        "can't speak properly",
+        "sudden weakness one side",
+        "one side of my body",
+        "sudden confusion",
+        "sudden loss of vision",
+        "stroke",
+        "falij",
+        "zuban latak"
+      ]
+    },
+    {
+      "id": "worst_headache",
+      "label": "Sudden, very severe headache",
+      "keywords": [
+        "worst headache of my life",
+        "thunderclap headache",
+        "sudden severe headache",
+        "achanak bohat shadeed sar dard"
+      ]
+    },
+    {
+      "id": "unconscious",
+      "label": "Fainting or loss of consciousness",
+      "keywords": [
+        "lost consciousness",
+        "loss of consciousness",
+        "unconscious",
+        "passed out",
+        "fainted",
+        "not responding",
+        "behosh",
+        "behoshi"
+      ]
+    },
+    {
+      "id": "seizure",
+      "label": "Seizure or fit",
+      "keywords": [
+        "seizure",
+        "convulsion",
+        "having a fit",
+        "daura",
+        "mirgi"
+      ]
+    },
+    {
+      "id": "severe_bleeding",
+      "label": "Severe bleeding that will not stop",
+      "keywords": [
+        "severe bleeding",
+        "bleeding won't stop",
+        "bleeding wont stop",
+        "bleeding heavily",
+        "heavy bleeding",
+        "khoon nahi ruk raha",
+        "bohat khoon beh raha"
+      ]
+    },
+    {
+      "id": "vomiting_coughing_blood",
+      "label": "Vomiting or coughing up blood",
+      "keywords": [
+        "vomiting blood",
+        "coughing up blood",
+        "coughing blood",
+        "blood in vomit",
+        "khoon ki ulti",
+        "khoon ki ultiyan",
+        "khoon thook"
+      ]
+    },
+    {
+      "id": "allergic_reaction",
+      "label": "Severe allergic reaction",
+      "keywords": [
+        "anaphylaxis",
+        "throat swelling",
+        "swollen throat",
+        "swelling of face",
+        "swollen tongue",
+        "face swelling after",
+        "allergic reaction and can't breathe"
+      ]
+    },
+    {
+      "id": "self_harm",
+      "label": "Thoughts of suicide or self-harm",
+      "keywords": [
+        "suicide",
+        "suicidal",
+        "kill myself",
+        "end my life",
+        "want to die",
+        "self harm",
+        "self-harm",
+        "hurt myself",
+        "khud kushi",
+        "marna chahta",
+        "marna chahti",
+        "jaan dena chahta",
+        "jaan dena chahti"
+      ]
+    },
+    {
+      "id": "poisoning_overdose",
+      "label": "Poisoning or overdose",
+      "keywords": [
+        "overdose",
+        "took too many pills",
+        "swallowed poison",
+        "drank bleach",
+        "zeher",
+        "zehar kha"
+      ]
+    },
+    {
+      "id": "pregnancy_emergency",
+      "label": "Bleeding or severe pain during pregnancy",
+      "keywords": [
+        "pregnant and bleeding",
+        "bleeding while pregnant",
+        "bleeding in pregnancy",
+        "severe pain while pregnant",
+        "hamal mein khoon",
+        "hamal me khoon"
+      ]
+    },
+    {
+      "id": "meningitis_signs",
+      "label": "Fever with stiff neck or rash that does not fade",
+      "keywords": [
+        "stiff neck and fever",
+        "fever and stiff neck",
+        "stiff neck with fever",
+        "rash that doesn't fade",
+        "rash that does not fade"
+      ]
+    },
+    {
+      "id": "newborn_fever",
+      "label": "Fever in a baby under 3 months",
+      "keywords": [
+        "newborn with fever",
+        "newborn has fever",
+        "baby under 3 months fever",
+        "2 month old fever",
+        "1 month old fever",
+        "infant fever"
+      ]
+    },
+    {
+      "id": "head_injury",
+      "label": "Serious head injury",
+      "keywords": [
+        "hit my head and",
+        "head injury and vomiting",
+        "head injury and confused",
+        "head injury unconscious",
+        "sar par choot aur ulti"
+      ]
+    },
+    {
+      "id": "severe_burn",
+      "label": "Large or deep burn",
+      "keywords": [
+        "severe burn",
+        "large burn",
+        "deep burn",
+        "badly burned",
+        "bohat jal gaya"
+      ]
+    },
+    {
+      "id": "blue_lips",
+      "label": "Blue or grey lips or face",
+      "keywords": [
+        "blue lips",
+        "lips turning blue",
+        "face turning blue",
+        "grey lips",
+        "hont neele"
+      ]
+    }
+  ],
+  "urgent": [
+    {
+      "id": "high_fever",
+      "label": "Very high fever (39.4 C / 103 F or higher)",
+      "keywords": [
+        "fever of 103",
+        "fever of 104",
+        "fever 103",
+        "fever 104",
+        "temperature 103",
+        "temperature 104",
+        "bohat tez bukhar"
+      ]
+    },
+    {
+      "id": "long_fever",
+      "label": "Fever lasting more than 3 days",
+      "keywords": [
+        "fever for 4 days",
+        "fever for five days",
+        "fever for a week",
+        "fever for 5 days",
+        "fever for 6 days",
+        "fever more than 3 days",
+        "bukhar 4 din",
+        "bukhar 5 din",
+        "bukhar ek hafta"
+      ]
+    },
+    {
+      "id": "dehydration",
+      "label": "Signs of dehydration",
+      "keywords": [
+        "can't keep fluids down",
+        "cant keep fluids down",
+        "cannot keep water down",
+        "very little urine",
+        "not peeing",
+        "very dry mouth",
+        "paani nahi ruk raha"
+      ]
+    },
+    {
+      "id": "blood_urine_stool",
+      "label": "Blood in urine or stool",
+      "keywords": [
+        "blood in urine",
+        "blood in stool",
+        "black stool",
+        "bloody stool",
+        "peshab mein khoon",
+        "potty mein khoon",
+        "tarry stool"
+      ]
+    },
+    {
+      "id": "severe_pain",
+      "label": "Severe pain that medicine does not ease",
+      "keywords": [
+        "severe pain",
+        "unbearable pain",
+        "pain is 9",
+        "pain is 10",
+        "bardasht se bahar dard",
+        "shadeed dard"
+      ]
+    },
+    {
+      "id": "spreading_infection",
+      "label": "Spreading redness, pus or red streaks",
+      "keywords": [
+        "spreading redness",
+        "red streaks",
+        "pus",
+        "wound infected",
+        "infected wound",
+        "zakhm mein peep"
+      ]
+    },
+    {
+      "id": "worsening",
+      "label": "Getting clearly worse, or better then worse again",
+      "keywords": [
+        "getting worse",
+        "getting much worse",
+        "rapidly worsening",
+        "better then worse",
+        "bigar rahi hai",
+        "tabiyat bigar"
+      ]
+    }
+  ]
+}

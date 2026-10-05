@@ -1,0 +1,318 @@
+{
+  "disclaimer": "ALL doctors, fees and schedules below are FICTIONAL sample data for a learning project. They are not real people or real clinics.",
+  "doctors": [
+    {
+      "id": "doc-001",
+      "name": "Dr. Sana Iqbal (Sample)",
+      "specialty": "general_physician",
+      "city": "Karachi",
+      "experience_years": 9,
+      "fee_pkr": 1500,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "in-person",
+        "video"
+      ],
+      "schedule": {
+        "days": [
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu"
+        ],
+        "start": "10:00",
+        "end": "14:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    },
+    {
+      "id": "doc-002",
+      "name": "Dr. Bilal Hashmi (Sample)",
+      "specialty": "general_physician",
+      "city": "Lahore",
+      "experience_years": 14,
+      "fee_pkr": 2000,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "in-person"
+      ],
+      "schedule": {
+        "days": [
+          "Mon",
+          "Wed",
+          "Fri"
+        ],
+        "start": "16:00",
+        "end": "20:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    },
+    {
+      "id": "doc-003",
+      "name": "Dr. Hina Farooq (Sample)",
+      "specialty": "general_physician",
+      "city": "Islamabad",
+      "experience_years": 6,
+      "fee_pkr": 1200,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "video"
+      ],
+      "schedule": {
+        "days": [
+          "Tue",
+          "Thu",
+          "Sat"
+        ],
+        "start": "09:00",
+        "end": "13:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    },
+    {
+      "id": "doc-004",
+      "name": "Dr. Omar Siddiqui (Sample)",
+      "specialty": "cardiologist",
+      "city": "Karachi",
+      "experience_years": 18,
+      "fee_pkr": 3500,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "in-person"
+      ],
+      "schedule": {
+        "days": [
+          "Mon",
+          "Thu"
+        ],
+        "start": "15:00",
+        "end": "18:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    },
+    {
+      "id": "doc-005",
+      "name": "Dr. Maryam Qureshi (Sample)",
+      "specialty": "neurologist",
+      "city": "Lahore",
+      "experience_years": 12,
+      "fee_pkr": 3000,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "in-person",
+        "video"
+      ],
+      "schedule": {
+        "days": [
+          "Tue",
+          "Fri"
+        ],
+        "start": "11:00",
+        "end": "15:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    },
+    {
+      "id": "doc-006",
+      "name": "Dr. Faisal Ansari (Sample)",
+      "specialty": "dermatologist",
+      "city": "Islamabad",
+      "experience_years": 8,
+      "fee_pkr": 2500,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "in-person"
+      ],
+      "schedule": {
+        "days": [
+          "Mon",
+          "Wed",
+          "Sat"
+        ],
+        "start": "12:00",
+        "end": "16:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    },
+    {
+      "id": "doc-007",
+      "name": "Dr. Nadia Rehman (Sample)",
+      "specialty": "pediatrician",
+      "city": "Karachi",
+      "experience_years": 11,
+      "fee_pkr": 2000,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "in-person",
+        "video"
+      ],
+      "schedule": {
+        "days": [
+          "Mon",
+          "Tue",
+          "Thu",
+          "Fri"
+        ],
+        "start": "10:00",
+        "end": "13:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    },
+    {
+      "id": "doc-008",
+      "name": "Dr. Kamran Butt (Sample)",
+      "specialty": "gastroenterologist",
+      "city": "Lahore",
+      "experience_years": 15,
+      "fee_pkr": 3000,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "in-person"
+      ],
+      "schedule": {
+        "days": [
+          "Wed",
+          "Sat"
+        ],
+        "start": "14:00",
+        "end": "18:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    },
+    {
+      "id": "doc-009",
+      "name": "Dr. Zainab Malik (Sample)",
+      "specialty": "ent",
+      "city": "Karachi",
+      "experience_years": 7,
+      "fee_pkr": 2200,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "in-person"
+      ],
+      "schedule": {
+        "days": [
+          "Tue",
+          "Thu"
+        ],
+        "start": "16:00",
+        "end": "19:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    },
+    {
+      "id": "doc-010",
+      "name": "Dr. Adeel Raza (Sample)",
+      "specialty": "orthopedic",
+      "city": "Islamabad",
+      "experience_years": 13,
+      "fee_pkr": 2800,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "in-person"
+      ],
+      "schedule": {
+        "days": [
+          "Mon",
+          "Fri"
+        ],
+        "start": "10:00",
+        "end": "14:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    },
+    {
+      "id": "doc-011",
+      "name": "Dr. Rabia Aslam (Sample)",
+      "specialty": "gynecologist",
+      "city": "Lahore",
+      "experience_years": 10,
+      "fee_pkr": 2800,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "in-person",
+        "video"
+      ],
+      "schedule": {
+        "days": [
+          "Mon",
+          "Wed",
+          "Thu"
+        ],
+        "start": "11:00",
+        "end": "15:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    },
+    {
+      "id": "doc-012",
+      "name": "Dr. Hamza Yousuf (Sample)",
+      "specialty": "psychiatrist",
+      "city": "Karachi",
+      "experience_years": 9,
+      "fee_pkr": 3000,
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "modes": [
+        "video"
+      ],
+      "schedule": {
+        "days": [
+          "Tue",
+          "Thu",
+          "Sat"
+        ],
+        "start": "17:00",
+        "end": "20:00",
+        "slot_minutes": 30
+      },
+      "is_sample": true
+    }
+  ]
+}
