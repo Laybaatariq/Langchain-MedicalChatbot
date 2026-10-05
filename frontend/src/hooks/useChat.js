@@ -52,6 +52,8 @@ export function useChat() {
               category: data.category,
               sources: data.sources || [],
               disclaimer: data.disclaimer,
+              notice: data.notice,
+              answerMode: data.answer_mode,
             },
           ],
         }));
