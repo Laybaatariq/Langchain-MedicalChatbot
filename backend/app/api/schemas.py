@@ -21,6 +21,10 @@ class ChatResponse(BaseModel):
     category: str | None = None
     sources: list[SourceCitation] = Field(default_factory=list)
     disclaimer: str | None = None
+    # Shown above answers that did not come from the loaded documents
+    notice: str | None = None
+    # "documents" | "general" | "chat" | "emergency"
+    answer_mode: str | None = None
 
 
 class HealthResponse(BaseModel):
