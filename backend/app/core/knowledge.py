@@ -37,12 +37,29 @@ def load_doctors() -> list[dict]:
     return _read(DOCTORS_FILE)["doctors"]
 
 
+# ---------------------------------------------------------------- intake helpers
+def load_questions() -> dict[str, dict]:
+    """Intake questions by id."""
+    return {q["id"]: q for q in load_intake()["questions"]}
+
+
+def load_default_flow_ids() -> list[str]:
+    """Question ids of the flow chosen by 'default_flow' (a fresh list every time)."""
+    intake = load_intake()
+    return list(intake["flows"][intake["default_flow"]])
+
+
+def load_skip_labels() -> dict[str, str]:
+    return load_intake()["skip_label"]
+
+
+# ---------------------------------------------------------------- checks
 def validate() -> list[str]:
     """Returns a list of problems (empty list = everything is consistent)."""
     problems: list[str] = []
 
-    specialty_ids = {s["id"] for s in load_specialties()["specialties"]}
     specialties = load_specialties()
+    specialty_ids = {s["id"] for s in specialties["specialties"]}
     for key in ("default", "child_specialty"):
         if specialties[key] not in specialty_ids:
             problems.append(f"specialties.json: '{key}' points to unknown specialty '{specialties[key]}'")
@@ -54,11 +71,27 @@ def validate() -> list[str]:
     intake = load_intake()
     question_ids = {q["id"] for q in intake["questions"]}
     for flow_name, ids in intake["flows"].items():
+        if ids and ids[0] != "chief_complaint":
+            problems.append(f"intake_questions.json: flow '{flow_name}' must start with 'chief_complaint'")
         for qid in ids:
             if qid not in question_ids:
                 problems.append(f"intake_questions.json: flow '{flow_name}' uses unknown question '{qid}'")
     if intake["default_flow"] not in intake["flows"]:
         problems.append("intake_questions.json: default_flow is not one of the flows")
+
+    for q in intake["questions"]:
+        for lang in ("en", "ru"):
+            if not q.get(lang):
+                problems.append(f"intake_questions.json: question '{q['id']}' has no '{lang}' text")
+        for option in q.get("options", []):
+            for field in ("value", "en", "ru"):
+                if not option.get(field):
+                    problems.append(f"intake_questions.json: an option of '{q['id']}' is missing '{field}'")
+        if q["type"] in ("choice", "multi_choice", "age") and not q.get("options"):
+            problems.append(f"intake_questions.json: question '{q['id']}' needs options")
+    for lang in ("en", "ru"):
+        if not intake["skip_label"].get(lang):
+            problems.append(f"intake_questions.json: skip_label has no '{lang}' text")
 
     seen: set[str] = set()
     for level in ("emergency", "urgent"):
@@ -76,7 +109,8 @@ if __name__ == "__main__":
     flags = load_red_flags()
     print(f"Red flags: {len(flags['emergency'])} emergency, {len(flags['urgent'])} urgent")
     print(f"Specialties: {len(load_specialties()['specialties'])}")
-    print(f"Intake questions: {len(load_intake()['questions'])}, flows: {list(load_intake()['flows'])}")
+    intake = load_intake()
+    print(f"Intake questions: {len(intake['questions'])}, flows: {list(intake['flows'])}, default: {intake['default_flow']}")
     print(f"Sample doctors: {len(load_doctors())}")
 
     issues = validate()

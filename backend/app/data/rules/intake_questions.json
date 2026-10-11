@@ -1,166 +1,82 @@
 {
-  "note": "Questions the bot asks one at a time, like a doctor would. 'type' tells the frontend which control to show. Every question is skippable except the first. The red-flag check runs after EVERY answer.",
-  "questions": [
-    {
-      "id": "chief_complaint",
-      "text": "What is bothering you today?",
-      "type": "text",
-      "required": true,
-      "skippable": false
-    },
-    {
-      "id": "duration",
-      "text": "How long has this been going on?",
-      "type": "choice",
-      "skippable": true,
-      "options": [
-        "Less than a day",
-        "1 to 3 days",
-        "4 to 7 days",
-        "More than a week",
-        "More than a month"
-      ]
-    },
-    {
-      "id": "severity",
-      "text": "On a scale of 1 to 10, how bad is it? (1 is barely noticeable, 10 is the worst you can imagine)",
-      "type": "scale",
-      "skippable": true,
-      "min": 1,
-      "max": 10
-    },
-    {
-      "id": "trend",
-      "text": "Is it getting better, staying the same, or getting worse?",
-      "type": "choice",
-      "skippable": true,
-      "options": [
-        "Getting better",
-        "About the same",
-        "Getting worse"
-      ]
-    },
-    {
-      "id": "associated",
-      "text": "Are you also having any of these?",
-      "type": "multi_choice",
-      "skippable": true,
-      "options": [
-        "Fever",
-        "Vomiting",
-        "Diarrhea",
-        "Cough",
-        "Shortness of breath",
-        "Chest pain",
-        "Rash",
-        "Dizziness",
-        "None of these"
-      ]
-    },
-    {
-      "id": "age",
-      "text": "How old are you (or the person who is unwell)?",
-      "type": "number",
-      "skippable": true,
-      "min": 0,
-      "max": 120
-    },
-    {
-      "id": "sex",
-      "text": "Is the patient male or female?",
-      "type": "choice",
-      "skippable": true,
-      "options": [
-        "Male",
-        "Female",
-        "Prefer not to say"
-      ]
-    },
-    {
-      "id": "pregnancy",
-      "text": "Is there any chance of pregnancy?",
-      "type": "choice",
-      "skippable": true,
-      "options": [
-        "Yes",
-        "No",
-        "Not sure"
-      ],
-      "ask_if": {
-        "sex": "Female",
-        "age_min": 12,
-        "age_max": 55
-      }
-    },
-    {
-      "id": "conditions",
-      "text": "Do you have any long-term health conditions? (for example diabetes or high blood pressure)",
-      "type": "text",
-      "skippable": true
-    },
-    {
-      "id": "allergies",
-      "text": "Do you have any allergies, especially to medicines?",
-      "type": "text",
-      "skippable": true
-    },
-    {
-      "id": "medications",
-      "text": "Are you taking any medicines right now?",
-      "type": "text",
-      "skippable": true
-    }
-  ],
-  "flows": {
-    "short": [
-      "chief_complaint",
-      "duration",
-      "severity",
-      "associated"
-    ],
-    "standard": [
-      "chief_complaint",
-      "duration",
-      "severity",
-      "trend",
-      "associated",
-      "age"
-    ],
-    "full": [
-      "chief_complaint",
-      "duration",
-      "severity",
-      "trend",
-      "associated",
-      "age",
-      "sex",
-      "pregnancy",
-      "conditions",
-      "allergies",
-      "medications"
-    ]
-  },
+  "note": "Questions the bot asks one at a time, like a doctor would. 'en' is English and 'ru' is Roman Urdu. type: text | choice | scale | multi_choice | age. Choice options have a canonical 'value' used by the rules, and a label per language shown on the buttons. Every question is skippable except the first. The red-flag check runs after EVERY answer.",
   "default_flow": "standard",
-  "urgency_levels": [
-    {
-      "id": "emergency",
-      "label": "Emergency",
-      "meaning": "Possible threat to life. Show the emergency message only."
-    },
-    {
-      "id": "urgent",
-      "label": "See a doctor soon",
-      "meaning": "Should be seen today or within a day."
-    },
-    {
-      "id": "routine",
-      "label": "Book an appointment",
-      "meaning": "Can be seen within a few days."
-    },
-    {
-      "id": "self_care",
-      "label": "Self-care",
-      "meaning": "Mild. General care advice and when to see a doctor."
-    }
+  "flows": {
+    "short": ["chief_complaint", "duration", "severity", "associated"],
+    "standard": ["chief_complaint", "duration", "severity", "trend", "associated", "age"],
+    "full": ["chief_complaint", "duration", "severity", "trend", "associated", "age", "sex", "pregnancy", "conditions", "allergies", "medications"]
+  },
+  "skip_label": {"en": "Skip", "ru": "Chhor dein"},
+  "questions": [
+    {"id": "chief_complaint", "type": "text", "required": true, "skippable": false,
+     "en": "What is bothering you today?", "ru": "Aap ko aaj kya takleef hai?"},
+    {"id": "duration", "type": "choice", "skippable": true,
+     "en": "How long has this been going on?", "ru": "Ye takleef kitne waqt se hai?",
+     "options": [
+       {"value": "Less than a day", "en": "Less than a day", "ru": "Ek din se kam"},
+       {"value": "1 to 3 days", "en": "1 to 3 days", "ru": "1 se 3 din"},
+       {"value": "4 to 7 days", "en": "4 to 7 days", "ru": "4 se 7 din"},
+       {"value": "More than a week", "en": "More than a week", "ru": "Ek hafte se zyada"},
+       {"value": "More than a month", "en": "More than a month", "ru": "Ek mahine se zyada"}
+     ]},
+    {"id": "severity", "type": "scale", "skippable": true, "min": 1, "max": 10,
+     "en": "On a scale of 1 to 10, how bad is it? (1 is barely noticeable, 10 is the worst you can imagine)",
+     "ru": "1 se 10 tak, takleef kitni shadeed hai? (1 bohat halki, 10 sab se zyada shadeed)"},
+    {"id": "trend", "type": "choice", "skippable": true,
+     "en": "Is it getting better, staying the same, or getting worse?",
+     "ru": "Takleef behtar ho rahi hai, waisi hi hai, ya bigar rahi hai?",
+     "options": [
+       {"value": "Getting better", "en": "Getting better", "ru": "Behtar ho rahi hai"},
+       {"value": "About the same", "en": "About the same", "ru": "Waisi hi hai"},
+       {"value": "Getting worse", "en": "Getting worse", "ru": "Bigar rahi hai"}
+     ]},
+    {"id": "associated", "type": "multi_choice", "skippable": true,
+     "en": "Are you also having any of these? Tap all that apply, then Done.",
+     "ru": "Kya in mein se koi aur takleef bhi hai? Jo lagu hon sab chunein, phir Theek hai dabayen.",
+     "options": [
+       {"value": "Fever", "en": "Fever", "ru": "Bukhar"},
+       {"value": "Vomiting", "en": "Vomiting", "ru": "Ulti"},
+       {"value": "Diarrhea", "en": "Diarrhea", "ru": "Dast"},
+       {"value": "Cough", "en": "Cough", "ru": "Khansi"},
+       {"value": "Shortness of breath", "en": "Shortness of breath", "ru": "Saans phoolna"},
+       {"value": "Chest pain", "en": "Chest pain", "ru": "Seene mein dard"},
+       {"value": "Rash", "en": "Rash", "ru": "Jild par daane"},
+       {"value": "Dizziness", "en": "Dizziness", "ru": "Chakkar"},
+       {"value": "None of these", "en": "None of these", "ru": "Inmein se koi nahi"}
+     ]},
+    {"id": "age", "type": "age", "skippable": true,
+     "en": "How old is the patient? Pick an age group or type the age in years.",
+     "ru": "Mareez ki umar kitni hai? Umar ka group chunein ya saalon mein likh dein.",
+     "options": [
+       {"value": "0", "en": "Under 1 year", "ru": "1 saal se kam"},
+       {"value": "2", "en": "1 to 2 years", "ru": "1 se 2 saal"},
+       {"value": "8", "en": "3 to 12 years", "ru": "3 se 12 saal"},
+       {"value": "15", "en": "13 to 17 years", "ru": "13 se 17 saal"},
+       {"value": "35", "en": "18 to 64 years", "ru": "18 se 64 saal"},
+       {"value": "70", "en": "65 or older", "ru": "65 ya zyada"}
+     ]},
+    {"id": "sex", "type": "choice", "skippable": true,
+     "en": "Is the patient male or female?", "ru": "Mareez mard hai ya aurat?",
+     "options": [
+       {"value": "Male", "en": "Male", "ru": "Mard"},
+       {"value": "Female", "en": "Female", "ru": "Aurat"},
+       {"value": "Prefer not to say", "en": "Prefer not to say", "ru": "Batana nahi chahte"}
+     ]},
+    {"id": "pregnancy", "type": "choice", "skippable": true,
+     "en": "Is there any chance of pregnancy?", "ru": "Kya hamal ka koi imkan hai?",
+     "options": [
+       {"value": "Yes", "en": "Yes", "ru": "Haan"},
+       {"value": "No", "en": "No", "ru": "Nahi"},
+       {"value": "Not sure", "en": "Not sure", "ru": "Pata nahi"}
+     ],
+     "ask_if": {"sex": "Female", "age_min": 12, "age_max": 55}},
+    {"id": "conditions", "type": "text", "skippable": true,
+     "en": "Do you have any long-term health conditions? (for example diabetes or high blood pressure)",
+     "ru": "Kya aap ko koi lambi bimari hai? (jaise sugar ya blood pressure)"},
+    {"id": "allergies", "type": "text", "skippable": true,
+     "en": "Do you have any allergies, especially to medicines?",
+     "ru": "Kya aap ko kisi cheez se allergy hai, khaas taur par dawaiyon se?"},
+    {"id": "medications", "type": "text", "skippable": true,
+     "en": "Are you taking any medicines right now?", "ru": "Kya aap abhi koi dawai le rahe hain?"}
   ]
 }
