@@ -37,7 +37,15 @@ export default function App() {
           {messages.length === 0 ? (
             <EmptyState onPick={send} />
           ) : (
-            messages.map((m, i) => <Message key={i} message={m} />)
+            messages.map((m, i) => (
+              <Message
+                key={i}
+                message={m}
+                isLast={i === messages.length - 1}
+                onReply={send}
+                busy={loading}
+              />
+            ))
           )}
 
           {loading && (

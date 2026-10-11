@@ -54,6 +54,11 @@ export function useChat() {
               disclaimer: data.disclaimer,
               notice: data.notice,
               answerMode: data.answer_mode,
+              quickReplies: data.quick_replies,
+              progress: data.progress,
+              doctors: data.doctors || [],
+              urgency: data.urgency,
+              urgencyLabel: data.urgency_label,
             },
           ],
         }));

@@ -589,3 +589,121 @@ textarea {
 .attribution a {
   color: var(--brand);
 }
+
+/* ---------- Batch 2 additions: symptom intake ---------- */
+.progress {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.urgency {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+.urgency-urgent {
+  background: var(--caution-bg);
+  color: var(--caution);
+}
+.urgency-routine {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+.urgency-self_care {
+  background: #e6f4ec;
+  color: #1b6b47;
+}
+
+.quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.chip {
+  background: var(--surface);
+  border: 1px solid var(--brand);
+  color: var(--brand);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.chip:hover:not(:disabled) {
+  background: var(--brand-soft);
+}
+.chip[aria-pressed="true"] {
+  background: var(--brand);
+  color: var(--on-brand);
+}
+.chip-confirm {
+  background: var(--brand);
+  color: var(--on-brand);
+}
+.chip-confirm:hover:not(:disabled) {
+  background: var(--brand-hover);
+}
+.chip-skip {
+  border-color: var(--line);
+  color: var(--muted);
+}
+.chip:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.doctors {
+  margin-top: 14px;
+}
+.doctors h3 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+.doctors ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.doctor {
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.doctor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.doctor-name {
+  margin: 0;
+  font-weight: 700;
+}
+.doctor-tag {
+  flex-shrink: 0;
+  padding: 1px 10px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.doctor-meta {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.doctor-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-style: italic;
+}
