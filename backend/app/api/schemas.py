@@ -15,6 +15,32 @@ class SourceCitation(BaseModel):
     score: float | None = None
 
 
+class QuickReplies(BaseModel):
+    """Buttons shown under a question. mode: single | multi | text."""
+    mode: str
+    options: list[str] = Field(default_factory=list)
+    skip_label: str | None = None
+    confirm_label: str | None = None  # only for mode "multi"
+
+
+class Progress(BaseModel):
+    current: int
+    total: int
+    label: str
+
+
+class DoctorCard(BaseModel):
+    id: str
+    name: str
+    specialty: str
+    city: str
+    experience_years: int
+    fee_pkr: int
+    modes: list[str] = Field(default_factory=list)
+    days: list[str] = Field(default_factory=list)
+    is_sample: bool = True
+
+
 class ChatResponse(BaseModel):
     session_id: str
     reply: str
@@ -23,8 +49,14 @@ class ChatResponse(BaseModel):
     disclaimer: str | None = None
     # Shown above answers that did not come from the loaded documents
     notice: str | None = None
-    # "documents" | "general" | "chat" | "emergency"
+    # "documents" | "general" | "chat" | "emergency" | "intake"
     answer_mode: str | None = None
+    # Symptom intake
+    quick_replies: QuickReplies | None = None
+    progress: Progress | None = None
+    doctors: list[DoctorCard] = Field(default_factory=list)
+    urgency: str | None = None  # "urgent" | "routine" | "self_care"
+    urgency_label: str | None = None
 
 
 class HealthResponse(BaseModel):

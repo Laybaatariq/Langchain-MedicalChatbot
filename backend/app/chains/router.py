@@ -1,6 +1,6 @@
 """
 Reads a new message (plus the last few turns) and decides, in ONE LLM call:
-  - intent:        medical | chitchat | off_topic
+  - intent:        medical | symptom | chitchat | off_topic
   - language:      english | roman_urdu | urdu
   - english_query: a standalone English search query (resolves "it/this", translates Urdu)
   - urgency:       emergency | sensitive | normal
@@ -21,7 +21,7 @@ from app.safety.emergency import guess_language
 
 settings = get_settings()
 
-_INTENTS = {"medical", "chitchat", "off_topic"}
+_INTENTS = {"medical", "symptom", "chitchat", "off_topic"}
 _LANGUAGES = {"english", "roman_urdu", "urdu"}
 _URGENCIES = {"emergency", "sensitive", "normal"}
 
@@ -36,7 +36,8 @@ _ROUTER_PROMPT = ChatPromptTemplate.from_messages([
 Return ONLY a JSON object with exactly these four keys: intent, language, english_query, urgency. No other text.
 
 intent
-- "medical": any question about health, symptoms, conditions, medicines, the body, doctors or hospitals. A short follow-up that depends on the earlier conversation counts as medical when the topic is health.
+- "medical": a general question about health, conditions, medicines or the body (what is..., what causes..., how to prevent..., what does this medicine do). A short follow-up that depends on the earlier conversation counts as medical when the topic is health.
+- "symptom": the person describes their OWN or someone's current symptoms or health problem and wants to know what to do or which doctor to see (for example "I have had a fever for 3 days", "mujhe sar dard hai", "my son has a rash", "which doctor for knee pain?").
 - "chitchat": greetings, thanks, goodbyes, "who are you", "what can you do", small talk.
 - "off_topic": anything else (sports, coding, politics, and so on).
 

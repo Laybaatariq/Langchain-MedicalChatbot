@@ -4,6 +4,8 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_groq import ChatGroq
 
 from app.chains.router import route_message
+from app.intake import flow as intake_flow
+from app.intake import store as intake_store
 from app.chains.system_prompts import (
     CHAT_SYSTEM_PROMPT,
     DISCLAIMERS,
@@ -110,7 +112,12 @@ def _response(reply: str, category: str, *, sources=None, disclaimer=None, notic
         "sources": sources or [],
         "disclaimer": disclaimer,
         "notice": notice,
-        "answer_mode": answer_mode,  # "documents" | "general" | "chat" | "emergency"
+        "answer_mode": answer_mode,  # "documents" | "general" | "chat" | "emergency" | "intake"
+        "quick_replies": None,
+        "progress": None,
+        "doctors": [],
+        "urgency": None,
+        "urgency_label": None,
     }
 
 
@@ -144,17 +151,39 @@ def _is_sensitive(message: str, route) -> bool:
 
 
 # ---------------------------------------------------------------- main entry point
-def answer_query(user_message: str, history: list[dict] | None = None) -> dict:
+def _active_intake(session_id: str | None) -> dict | None:
+    """The running symptom intake of this chat session, if any (never raises)."""
+    if not session_id:
+        return None
+    try:
+        return intake_store.get_state(session_id)
+    except Exception as exc:
+        print(f"[intake] could not read the intake state: {exc}")
+        return None
+
+
+def answer_query(user_message: str, history: list[dict] | None = None, session_id: str | None = None) -> dict:
     """
+    0. A symptom intake is running -> this message answers its current question
     1. Route the message (intent, language, standalone English query, urgency)
     2. Safety first: emergencies get a fixed message, no LLM answer
-    3. Small talk / off-topic -> short friendly reply
-    4. Medical question -> answer from the documents if a relevant passage exists,
+    3. Symptoms -> start the one-question-at-a-time intake
+    4. Small talk / off-topic -> short friendly reply
+    5. Medical question -> answer from the documents if a relevant passage exists,
        otherwise a clearly labelled general-knowledge answer
 
     Returns a dict matching ChatResponse (minus session_id), see api/schemas.py.
     """
     history = history or []
+
+    # --- A symptom intake is already running ---
+    state = _active_intake(session_id)
+    if state:
+        outcome = intake_flow.handle_answer(state, user_message)
+        if outcome is not None:
+            return outcome
+        # None means the patient changed topic: carry on with normal handling below
+
     route = route_message(user_message, history)
     language_name = LANGUAGE_NAMES.get(route.language, LANGUAGE_NAMES["english"])
     messages = _to_messages(history)
@@ -164,6 +193,10 @@ def answer_query(user_message: str, history: list[dict] | None = None) -> dict:
         return _response(
             emergency_message(route.language), TriageCategory.EMERGENCY.value, answer_mode="emergency"
         )
+
+    # --- The patient describes symptoms: start the intake ---
+    if route.intent == "symptom" and session_id:
+        return intake_flow.start(session_id, user_message, route)
 
     sensitive = _is_sensitive(user_message, route)
     category = (TriageCategory.SENSITIVE if sensitive else TriageCategory.NORMAL).value
@@ -214,6 +247,7 @@ def answer_query(user_message: str, history: list[dict] | None = None) -> dict:
 if __name__ == "__main__":
     test_queries = [
         "hi",
+        "mujhe 3 din se bukhar hai",
         "chest pain and can't breathe",
         "what causes a stroke?",
         "sar dard ka ilaj kya hai",
@@ -224,7 +258,7 @@ if __name__ == "__main__":
     for q in test_queries:
         print(f"\n{'=' * 50}")
         print(f"Query: {q}")
-        result = answer_query(q)
+        result = answer_query(q)  # no session_id here, so symptoms are answered as plain questions
         print(f"Mode: {result['answer_mode']} | Category: {result['category']}")
         print(f"Reply: {result['reply']}")
         if result["notice"]:
