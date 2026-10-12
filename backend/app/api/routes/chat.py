@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException
 from app.api.schemas import ChatRequest, ChatResponse
 from app.chains.medical_qa_chain import answer_query
 from app.db.mongo import clear_history, get_history, save_message
+from app.intake.store import clear_state
 
 router = APIRouter()
 
@@ -18,7 +19,7 @@ def chat(request: ChatRequest) -> ChatResponse:
     history = get_history(session_id, limit=10)
 
     try:
-        result = answer_query(request.message, history=history)
+        result = answer_query(request.message, history=history, session_id=session_id)
     except Exception as exc:
         print(f"[chat] error: {exc}")
         raise HTTPException(status_code=500, detail="Something went wrong. Please try again.") from exc
@@ -30,6 +31,8 @@ def chat(request: ChatRequest) -> ChatResponse:
         result["reply"],
         metadata={
             "category": result["category"],
+            "answer_mode": result["answer_mode"],
+            "urgency": result["urgency"],
             "sources": [s["title"] for s in result["sources"]],
         },
     )
@@ -39,4 +42,9 @@ def chat(request: ChatRequest) -> ChatResponse:
 
 @router.delete("/chat/{session_id}")
 def delete_chat(session_id: str) -> dict:
-    return {"deleted": clear_history(session_id)}
+    deleted = clear_history(session_id)
+    try:
+        clear_state(session_id)  # also forget any running symptom intake
+    except Exception as exc:
+        print(f"[chat] could not clear the intake state: {exc}")
+    return {"deleted": deleted}
