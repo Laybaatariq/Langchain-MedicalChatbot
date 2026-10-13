@@ -35,6 +35,11 @@ class Settings(BaseSettings):
     mongodb_db_name: str = "medical_chatbot"
     mongodb_chat_collection: str = "chat_messages"
 
+    # --- Accounts and booking ---
+    jwt_secret: str = ""            # at least 32 characters, set it in .env
+    jwt_expire_hours: int = 24
+    clinic_timezone: str = "Asia/Karachi"
+
     # --- Safety layer ---
     triage_confidence_threshold: float = 0.6
     emergency_default_message: str = (
