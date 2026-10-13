@@ -36,6 +36,11 @@ def get_state(session_id: str) -> dict | None:
     return doc if doc and doc.get("status") == "active" else None
 
 
+def get_any(session_id: str) -> dict | None:
+    """The intake of this session whatever its status (active, done or cancelled), or None."""
+    return _collection().find_one({"_id": session_id})
+
+
 def save_state(state: dict) -> None:
     state["updated_at"] = datetime.now(timezone.utc)
     _collection().replace_one({"_id": state["_id"]}, state, upsert=True)
