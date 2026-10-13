@@ -1,4 +1,8 @@
-export default function DoctorCards({ doctors }) {
+/**
+ * Doctor suggestions under an intake result.
+ * onBook(doctor) opens the booking dialog; without it the cards have no Book button.
+ */
+export default function DoctorCards({ doctors, onBook }) {
   if (!doctors?.length) return null;
 
   const hasSample = doctors.some((d) => d.is_sample);
@@ -19,6 +23,11 @@ export default function DoctorCards({ doctors }) {
             <p className="doctor-meta">
               {d.modes.join(" or ")} · {d.days.join(", ")}
             </p>
+            {onBook && (
+              <button type="button" className="book-button" onClick={() => onBook(d)}>
+                Book appointment
+              </button>
+            )}
           </li>
         ))}
       </ul>

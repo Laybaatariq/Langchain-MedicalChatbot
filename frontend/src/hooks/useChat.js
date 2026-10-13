@@ -79,5 +79,5 @@ export function useChat() {
     setError(null);
   }, [sessionId]);
 
-  return { messages, loading, error, send, retry, reset };
+  return { messages, sessionId, loading, error, send, retry, reset };
 }

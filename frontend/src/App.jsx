@@ -1,17 +1,26 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useAuth } from "./auth/AuthContext.jsx";
+import AuthForm from "./components/AuthForm.jsx";
+import BookingDialog from "./components/BookingDialog.jsx";
 import Composer from "./components/Composer.jsx";
 import EmptyState from "./components/EmptyState.jsx";
 import { CrossMark, InfoIcon } from "./components/Icons.jsx";
 import Message from "./components/Message.jsx";
+import Modal from "./components/Modal.jsx";
 import { useChat } from "./hooks/useChat.js";
+import Appointments from "./pages/Appointments.jsx";
 
 export default function App() {
-  const { messages, loading, error, send, retry, reset } = useChat();
+  const { messages, sessionId, loading, error, send, retry, reset } = useChat();
+  const { user, signOut } = useAuth();
+  const [view, setView] = useState("chat"); // "chat" | "appointments"
+  const [bookingDoctor, setBookingDoctor] = useState(null);
+  const [showLogin, setShowLogin] = useState(false);
   const endRef = useRef(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages, loading, error]);
+    if (view === "chat") endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages, loading, error, view]);
 
   return (
     <div className="app">
@@ -26,63 +35,118 @@ export default function App() {
               <p>Health information grounded in medical documents</p>
             </div>
           </div>
-          <button type="button" className="ghost" onClick={reset} disabled={!messages.length}>
-            New chat
-          </button>
+
+          <nav className="nav" aria-label="Main">
+            <button
+              type="button"
+              className={`nav-link${view === "chat" ? " active" : ""}`}
+              aria-current={view === "chat" ? "page" : undefined}
+              onClick={() => setView("chat")}
+            >
+              Chat
+            </button>
+            <button
+              type="button"
+              className={`nav-link${view === "appointments" ? " active" : ""}`}
+              aria-current={view === "appointments" ? "page" : undefined}
+              onClick={() => setView("appointments")}
+            >
+              My appointments
+            </button>
+          </nav>
+
+          <div className="account">
+            {user ? (
+              <>
+                <span className="account-name">{user.name}</span>
+                <button type="button" className="ghost" onClick={signOut}>
+                  Log out
+                </button>
+              </>
+            ) : (
+              <button type="button" className="ghost" onClick={() => setShowLogin(true)}>
+                Log in
+              </button>
+            )}
+            {view === "chat" && (
+              <button type="button" className="ghost" onClick={reset} disabled={!messages.length}>
+                New chat
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
       <main className="thread">
         <div className="container" aria-live="polite">
-          {messages.length === 0 ? (
-            <EmptyState onPick={send} />
+          {view === "appointments" ? (
+            <Appointments onLogin={() => setShowLogin(true)} />
           ) : (
-            messages.map((m, i) => (
-              <Message
-                key={i}
-                message={m}
-                isLast={i === messages.length - 1}
-                onReply={send}
-                busy={loading}
-              />
-            ))
-          )}
+            <>
+              {messages.length === 0 ? (
+                <EmptyState onPick={send} />
+              ) : (
+                messages.map((m, i) => (
+                  <Message
+                    key={i}
+                    message={m}
+                    isLast={i === messages.length - 1}
+                    onReply={send}
+                    onBook={setBookingDoctor}
+                    busy={loading}
+                  />
+                ))
+              )}
 
-          {loading && (
-            <div className="row row-assistant" aria-label="Looking up an answer">
-              <span className="avatar" aria-hidden="true">
-                <CrossMark size={16} />
-              </span>
-              <div className="typing">
-                <span />
-                <span />
-                <span />
-              </div>
-            </div>
-          )}
+              {loading && (
+                <div className="row row-assistant" aria-label="Looking up an answer">
+                  <span className="avatar" aria-hidden="true">
+                    <CrossMark size={16} />
+                  </span>
+                  <div className="typing">
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                </div>
+              )}
 
-          {error && (
-            <div className="error" role="alert">
-              <p>{error}</p>
-              <button type="button" onClick={retry} disabled={loading}>
-                Try again
-              </button>
-            </div>
-          )}
+              {error && (
+                <div className="error" role="alert">
+                  <p>{error}</p>
+                  <button type="button" onClick={retry} disabled={loading}>
+                    Try again
+                  </button>
+                </div>
+              )}
 
-          <div ref={endRef} />
+              <div ref={endRef} />
+            </>
+          )}
         </div>
       </main>
 
-      <footer className="footer">
-        <div className="container">
-          <Composer onSend={send} disabled={loading} />
-          <p className="footnote">
-            <InfoIcon />
-            General information only. For urgent symptoms, contact your local emergency number.
-          </p>
-        </div>
-      </footer>
+      {view === "chat" && (
+        <footer className="footer">
+          <div className="container">
+            <Composer onSend={send} disabled={loading} />
+            <p className="footnote">
+              <InfoIcon />
+              General information only. For urgent symptoms, contact your local emergency number.
+            </p>
+          </div>
+        </footer>
+      )}
+
+      {bookingDoctor && (
+        <BookingDialog doctor={bookingDoctor} sessionId={sessionId} onClose={() => setBookingDoctor(null)} />
+      )}
+
+      {showLogin && (
+        <Modal title="Log in" onClose={() => setShowLogin(false)}>
+          <AuthForm onDone={() => setShowLogin(false)} />
+        </Modal>
+      )}
     </div>
   );
 }

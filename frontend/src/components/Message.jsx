@@ -21,9 +21,10 @@ function Emergency({ text }) {
 /**
  * isLast:  only the newest answer shows its quick-reply buttons
  * onReply: sends a button's text as the patient's message
+ * onBook:  opens the booking dialog for a doctor card
  * busy:    true while waiting for the server
  */
-export default function Message({ message, isLast = false, onReply, busy = false }) {
+export default function Message({ message, isLast = false, onReply, onBook, busy = false }) {
   if (message.role === "user") {
     return (
       <div className="row row-user">
@@ -65,7 +66,7 @@ export default function Message({ message, isLast = false, onReply, busy = false
           <ReactMarkdown>{message.content}</ReactMarkdown>
         </div>
 
-        <DoctorCards doctors={message.doctors} />
+        <DoctorCards doctors={message.doctors} onBook={onBook} />
 
         <Sources sources={message.sources} />
 
