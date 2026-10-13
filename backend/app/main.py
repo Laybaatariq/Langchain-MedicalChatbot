@@ -3,7 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import chat, health
+from app.api.routes import accounts, booking, chat, health
+from app.auth import users
+from app.booking import repo as booking_repo
 from app.db.mongo import ensure_indexes
 from app.rag.vector_store import ensure_collection_exists
 
@@ -12,15 +14,16 @@ from app.rag.vector_store import ensure_collection_exists
 async def lifespan(app: FastAPI):
     # Runs once at server startup. Failures are logged, not fatal, so a flaky
     # network doesn't stop the whole server from starting.
-    try:
-        ensure_collection_exists()
-    except Exception as exc:
-        print(f"[startup] Qdrant collection check failed: {exc}")
-
-    try:
-        ensure_indexes()
-    except Exception as exc:
-        print(f"[startup] MongoDB index setup failed: {exc}")
+    for name, task in [
+        ("Qdrant collection check", ensure_collection_exists),
+        ("MongoDB chat index", ensure_indexes),
+        ("users index", users.ensure_indexes),
+        ("appointments index", booking_repo.ensure_indexes),
+    ]:
+        try:
+            task()
+        except Exception as exc:
+            print(f"[startup] {name} failed: {exc}")
 
     yield
 
@@ -28,7 +31,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Medical Chatbot API",
     description="A LangChain + RAG powered medical information chatbot (portfolio project).",
-    version="0.1.0",
+    version="0.3.0",
     lifespan=lifespan,
 )
 
@@ -44,6 +47,8 @@ app.add_middleware(
 # --- Register routes ---
 app.include_router(health.router, tags=["Health"])
 app.include_router(chat.router, tags=["Chat"])
+app.include_router(accounts.router)
+app.include_router(booking.router)
 
 
 @app.get("/")
