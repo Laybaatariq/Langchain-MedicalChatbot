@@ -331,5 +331,5 @@ Each check prints `PASS` or `FAIL`. The booking script creates test accounts (`c
 ## Author
 
 **Laiba**. Built as a portfolio project to explore retrieval-augmented generation, safety design and full-stack development.
-```
+
 
