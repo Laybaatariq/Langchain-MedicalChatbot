@@ -266,10 +266,7 @@ Start the backend first, then run these in a third terminal:
 cd backend
 source venv/bin/activate
 
-python check_batch2.py    # chat, documents, emergencies, symptom intake
-python check_batch3.py    # sign-up, login, slots, booking rules, cancellation
 ```
-
 Each check prints `PASS` or `FAIL`. The booking script creates test accounts (`check-...@example.test`) and cancels its test appointments when it finishes.
 
 ---
