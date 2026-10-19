@@ -1119,3 +1119,197 @@ textarea {
     margin-left: 0;
   }
 }
+/* =====================================================================
+   UI REDESIGN: one header row, tabs with underline, account menu,
+   "+" new-chat in the composer, doctor rows with avatar, appointment date tiles.
+   ===================================================================== */
+
+/* ----- header: brand | tabs | account on one row ----- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.topbar .container {
+  max-width: 1000px;
+}
+.topbar-inner {
+  flex-wrap: nowrap;
+  gap: 28px;
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: 64px;
+}
+.brand {
+  padding: 12px 0;
+}
+.nav {
+  margin-left: 0;
+  align-self: stretch;
+  gap: 4px;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-bottom: 3px solid transparent;
+  color: var(--muted);
+  font-weight: 700;
+}
+.nav-link.active {
+  color: var(--brand);
+  border-bottom-color: var(--brand);
+}
+.account {
+  margin-left: auto;
+}
+.account-menu {
+  position: relative;
+}
+
+.avatar-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.avatar-btn:hover,
+.avatar-btn[aria-expanded="true"] {
+  border-color: var(--brand);
+}
+.avatar-initial {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: var(--on-brand);
+  font-size: 0.9rem;
+}
+.account-name {
+  max-width: 14ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 10;
+  min-width: 220px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(14, 42, 71, 0.15);
+}
+.menu-head {
+  margin: 0;
+  padding: 8px 12px 6px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+.menu button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  text-align: left;
+  font-weight: 700;
+  cursor: pointer;
+}
+.menu button:hover {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+/* ----- "+" new chat, inside the composer ----- */
+.new-chat {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.new-chat:hover:not(:disabled) {
+  background: #d6e4f6;
+}
+.new-chat:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ----- doctor rows: avatar, details, Book on the right ----- */
+.doctor-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.doc-avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.doctor-body {
+  flex: 1;
+  min-width: 0;
+}
+.doctor-row .book-button {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 7px 16px;
+}
+
+/* ----- appointments: date tile on the left, status and Cancel on the right ----- */
+.appt {
+  align-items: center;
+}
+.appt-date {
+  display: grid;
+  justify-items: center;
+  flex-shrink: 0;
+  width: 60px;
+  padding: 6px 0;
+  background: var(--brand-soft);
+  color: var(--brand);
+  border-radius: 12px;
+  line-height: 1.15;
+}
+.appt-date .day {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.appt-date .month {
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+.appt.is-cancelled .appt-date {
+  background: #eef1f4;
+  color: var(--muted);
+}
+.appt-main {
+  flex: 1;
+  min-width: 0;
+}
