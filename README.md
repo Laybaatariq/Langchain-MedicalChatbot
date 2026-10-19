@@ -254,33 +254,6 @@ python -m app.rag.debug_search "what causes migraines"    # retrieval scores
 
 ---
 
-## Environment variables
-
-Put these in `backend/.env`. Never commit this file.
-
-| Variable | Example | Purpose |
-|---|---|---|
-| `GROQ_API_KEY` | `gsk_...` | LLM key |
-| `LLM_MODEL_NAME` | `openai/gpt-oss-120b` | model used for the router and the answers |
-| `LLM_TEMPERATURE` | `0.1` | answer creativity (low on purpose) |
-| `QDRANT_URL` | `https://xxxx.cloud.qdrant.io:6333` | Qdrant Cloud cluster |
-| `QDRANT_API_KEY` | `...` | Qdrant key |
-| `QDRANT_COLLECTION_NAME` | `medical_docs` | collection name |
-| `MONGODB_URI` | `mongodb+srv://user:pass@cluster...` | MongoDB Atlas connection string |
-| `MONGODB_DB_NAME` | `medical_chatbot` | database name |
-| `MONGODB_CHAT_COLLECTION` | `chat_messages` | chat history collection |
-| `JWT_SECRET` | 32+ random characters | signs login tokens |
-| `CLINIC_TIMEZONE` | `Asia/Karachi` | time zone for slots |
-| `CORS_ORIGINS` | `https://your-app.vercel.app` | extra allowed frontend URLs, comma separated (for deployment) |
-
-Create a `JWT_SECRET`:
-
-```bash
-python -c "import secrets; print(secrets.token_urlsafe(48))"
-```
-
----
-
 ## Testing
 
 With the backend running:
