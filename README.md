@@ -76,30 +76,30 @@ patient book a fictional appointment.
 
 | | |
 |---|---|
-| **Greeting**<br>![Greeting](docs/01-greeting.png) | **Answer from documents with sources**<br>![Documents answer](docs/02-documents-answer.png) |
-| **Follow-up question**<br>![Follow-up](docs/03-followup.png) | **Roman Urdu answer**<br>![Roman Urdu](docs/04-roman-urdu.png) |
-| **Off-topic question**<br>![Off-topic](docs/05-off-topic.png) | **General answer notice**<br>![General notice](docs/06-general-notice.png) |
+| **Greeting**<br>![Greeting](docs/screenshots/01-greeting.png) | **Answer from documents with sources**<br>![Documents answer](docs/screenshots/02-documents-answer.png) |
+| **Follow-up question**<br>![Follow-up](docs/screenshots/03-followup.png) | **Roman Urdu answer**<br>![Roman Urdu](docs/screenshots/04-roman-urdu.png) |
+| **Off-topic question**<br>![Off-topic](docs/screenshots/05-off-topic.png) | **General answer notice**<br>![General notice](docs/screenshots/06-general-notice.png) |
 
 ### Safety
 
 | | |
 |---|---|
-| **General question, no alarm**<br>![Stroke question](docs/07-general-not-emergency.png) | **Emergency message**<br>![Emergency](docs/08-emergency.png) |
-| **Emergency during the intake**<br>![Intake emergency](docs/11-intake-emergency.png) | |
+| **General question, no alarm**<br>![Stroke question](docs/screenshots/07-general-not-emergency.png) | **Emergency message**<br>![Emergency](docs/screenshots/08-emergency.png) |
+| **Emergency during the intake**<br>![Intake emergency](docs/screenshots/11-intake-emergency.png) | |
 
 ### Symptom intake and doctor suggestion
 
 | | |
 |---|---|
-| **First intake question**<br>![Intake question](docs/09-intake-question.png) | **Result with urgency and doctors**<br>![Intake result](docs/10-intake-result.png) |
-| **Stopping the intake**<br>![Cancel](docs/12-intake-cancel.png) | |
+| **First intake question**<br>![Intake question](docs/screenshots/09-intake-question.png) | **Result with urgency and doctors**<br>![Intake result](docs/screenshots/10-intake-result.png) |
+| **Stopping the intake**<br>![Cancel](docs/screenshots/12-intake-cancel.png) | |
 
 ### Accounts and booking
 
 | | |
 |---|---|
-| **Booking a slot**<br>![Booking](docs/13-booking.png) | **My appointments**<br>![Appointments](docs/14-appointments.png) |
-| **Account menu**<br>![Account menu](docs/15-account-menu.png) | |
+| **Booking a slot**<br>![Booking](docs/screenshots/13-booking.png) | **My appointments**<br>![Appointments](docs/screenshots/14-appointments.png) |
+| **Account menu**<br>![Account menu](docs/screenshots/15-account-menu.png) | |
 
 ---
 
@@ -248,9 +248,38 @@ so no CORS setup is needed for local development.
 
 ```bash
 cd backend
-python -m app.core.knowledge      # rule files and sample doctors are consistent
-python -m app.rag.debug_search "what causes migraines"   # retrieval scores
+python -m app.core.knowledge                              # rule files and sample doctors are consistent
+python -m app.rag.debug_search "what causes migraines"    # retrieval scores
 ```
+
+---
+
+## Environment variables
+
+Put these in `backend/.env`. Never commit this file.
+
+| Variable | Example | Purpose |
+|---|---|---|
+| `GROQ_API_KEY` | `gsk_...` | LLM key |
+| `LLM_MODEL_NAME` | `openai/gpt-oss-120b` | model used for the router and the answers |
+| `LLM_TEMPERATURE` | `0.1` | answer creativity (low on purpose) |
+| `QDRANT_URL` | `https://xxxx.cloud.qdrant.io:6333` | Qdrant Cloud cluster |
+| `QDRANT_API_KEY` | `...` | Qdrant key |
+| `QDRANT_COLLECTION_NAME` | `medical_docs` | collection name |
+| `MONGODB_URI` | `mongodb+srv://user:pass@cluster...` | MongoDB Atlas connection string |
+| `MONGODB_DB_NAME` | `medical_chatbot` | database name |
+| `MONGODB_CHAT_COLLECTION` | `chat_messages` | chat history collection |
+| `JWT_SECRET` | 32+ random characters | signs login tokens |
+| `CLINIC_TIMEZONE` | `Asia/Karachi` | time zone for slots |
+| `CORS_ORIGINS` | `https://your-app.vercel.app` | extra allowed frontend URLs, comma separated (for deployment) |
+
+Create a `JWT_SECRET`:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(48))"
+```
+
+---
 
 ## Testing
 
