@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "./auth/AuthContext.jsx";
+import AccountMenu from "./components/AccountMenu.jsx";
 import AuthForm from "./components/AuthForm.jsx";
 import BookingDialog from "./components/BookingDialog.jsx";
 import Composer from "./components/Composer.jsx";
@@ -56,23 +57,12 @@ export default function App() {
           </nav>
 
           <div className="account">
-            {user ? (
-              <>
-                <span className="account-name">{user.name}</span>
-                <button type="button" className="ghost" onClick={signOut}>
-                  Log out
-                </button>
-              </>
-            ) : (
-              <button type="button" className="ghost" onClick={() => setShowLogin(true)}>
-                Log in
-              </button>
-            )}
-            {view === "chat" && (
-              <button type="button" className="ghost" onClick={reset} disabled={!messages.length}>
-                New chat
-              </button>
-            )}
+            <AccountMenu
+              user={user}
+              onLogin={() => setShowLogin(true)}
+              onOpenAppointments={() => setView("appointments")}
+              onLogout={signOut}
+            />
           </div>
         </div>
       </header>
@@ -129,7 +119,12 @@ export default function App() {
       {view === "chat" && (
         <footer className="footer">
           <div className="container">
-            <Composer onSend={send} disabled={loading} />
+            <Composer
+              onSend={send}
+              onNewChat={reset}
+              canStartNew={messages.length > 0}
+              disabled={loading}
+            />
             <p className="footnote">
               <InfoIcon />
               General information only. For urgent symptoms, contact your local emergency number.

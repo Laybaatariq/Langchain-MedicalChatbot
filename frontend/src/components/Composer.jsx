@@ -1,9 +1,16 @@
 import { useRef, useState } from "react";
-import { SendIcon } from "./Icons.jsx";
+import { PlusIcon, SendIcon } from "./Icons.jsx";
 
 const MAX_LENGTH = 2000; // matches the backend limit on ChatRequest.message
 
-export default function Composer({ onSend, disabled }) {
+/**
+ * The message box.
+ *   onSend:      sends the typed text
+ *   onNewChat:   the "+" button on the left starts a fresh conversation
+ *   canStartNew: false while the chat is still empty (nothing to clear)
+ *   disabled:    true while waiting for the server
+ */
+export default function Composer({ onSend, onNewChat, canStartNew = true, disabled }) {
   const [text, setText] = useState("");
   const ref = useRef(null);
 
@@ -30,6 +37,16 @@ export default function Composer({ onSend, disabled }) {
 
   return (
     <div className="composer">
+      <button
+        type="button"
+        className="new-chat"
+        aria-label="New chat"
+        title="New chat"
+        onClick={onNewChat}
+        disabled={!canStartNew || disabled}
+      >
+        <PlusIcon />
+      </button>
       <label htmlFor="message" className="visually-hidden">
         Your question
       </label>

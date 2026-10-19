@@ -27,6 +27,23 @@ export function SendIcon() {
   );
 }
 
+export function PlusIcon() {
+  return (
+    <svg {...base}>
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </svg>
+  );
+}
+
+export function ChevronDownIcon() {
+  return (
+    <svg {...base} width={16} height={16}>
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
+
 export function AlertIcon() {
   return (
     <svg {...base} width={26} height={26}>

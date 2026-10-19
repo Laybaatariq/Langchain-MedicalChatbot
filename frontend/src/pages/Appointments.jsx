@@ -2,11 +2,32 @@ import { useCallback, useEffect, useState } from "react";
 import { cancelAppointment, listMyAppointments } from "../api.js";
 import { useAuth } from "../auth/AuthContext.jsx";
 
+/** "Wed 14 Oct, 10:30" (clinic time, from the server) -> its parts, or null if it looks different */
+function parseLabel(label) {
+  const match = /^(\w{3}) (\d{1,2}) (\w{3}), (\d{1,2}:\d{2})$/.exec(label || "");
+  return match ? { weekday: match[1], day: match[2], month: match[3], time: match[4] } : null;
+}
+
 function Row({ appointment, onCancel, busy }) {
+  const parts = parseLabel(appointment.start_label);
+  const cancelled = appointment.status === "cancelled";
+
   return (
-    <li className="appt">
-      <div>
-        <p className="appt-when">{appointment.start_label}</p>
+    <li className={`appt${cancelled ? " is-cancelled" : ""}`}>
+      {parts && (
+        <span className="appt-date" aria-hidden="true">
+          <span className="day">{parts.day}</span>
+          <span className="month">
+            {parts.weekday} · {parts.month}
+          </span>
+        </span>
+      )}
+      <div className="appt-main">
+        <p className="appt-when">
+          <span className="visually-hidden">{appointment.start_label}. </span>
+          {parts ? `${parts.time}, ` : `${appointment.start_label}, `}
+          {appointment.duration_minutes} minutes
+        </p>
         <p className="appt-who">
           {appointment.doctor_name} · {appointment.specialty}
         </p>
